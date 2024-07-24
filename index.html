@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Parcelas (Visa e Master)</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">Calculadora de Parcelas (Visa e Master)</h1>
+        <div class="card">
+            <div class="card-body">
+                <form id="calcForm">
+                    <div class="form-group">
+                        <label for="amount">Valor(R$)</label>
+                        <input type="number" class="form-control" id="amount" placeholder="Digite o valor inteiro." required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Calcular</button>
+                </form>
+                <div class="mt-3" id="result" style="display: none;">
+                    <h3>Valores das Parcelas</h3>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Parcelas</th>
+                                <th>Valor da Parcela (R$)</th>
+                                <th>Valor Final (R$)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="container"><h6>Desenvolvido por Robson Melo</h6></footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.getElementById('calcForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const amount = parseFloat(document.getElementById('amount').value);
+
+            const multipliers = {
+                1: 1.03842222,
+                2: 1.05407444,
+                3: 1.05407444,
+                4: 1.06258667,
+                5: 1.07112333,
+                6: 1.07979778,
+                7: 1.08849556,
+                8: 1.09721444,
+                9: 1.10607333,
+                10: 1.11495222,
+                11: 1.12372222,
+                12: 1.13263111,
+                13: 1.19061889,
+                14: 1.20033778,
+                15: 1.21036111,
+                16: 1.22025778,
+                17: 1.23031556,
+                18: 1.24038778
+            };
+
+            const resultBody = document.getElementById('resultBody');
+            resultBody.innerHTML = '';
+
+            for (let i = 1; i <= 18; i++) {
+                const multiplier = multipliers[i];
+                const finalAmount = amount * multiplier;
+                const installmentValue = finalAmount / i;
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${i}x</td>
+                                <td>R$ ${installmentValue.toFixed(2)}</td>
+                                <td>R$ ${finalAmount.toFixed(2)}</td>`;
+                resultBody.appendChild(row);
+            }
+
+            document.getElementById('result').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
